@@ -4,11 +4,8 @@ import com.baizhi.cmfz.entity.User;
 import com.baizhi.cmfz.service.UserService;
 import com.baizhi.cmfz.util.CreateValidateCode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,19 +34,6 @@ public class UserController {
         return "login";
     }
 
-    @RequestMapping("/getVcode")
-    public void create(HttpSession session , HttpServletResponse response) throws IOException {
-
-        System.out.println("--- getvcode ---");
-        CreateValidateCode vcode = new CreateValidateCode(100,30,4,10);
-
-        System.out.println("vcode = "+vcode.getCode());
-
-        session.setAttribute("code",vcode.getCode());
-
-        vcode.write(response.getOutputStream());
-
-    }
 
     public UserService getUs() {
         return us;
