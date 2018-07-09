@@ -1,6 +1,12 @@
 package com.baizhi.cmfz.entity;
 
-public class Menu {
+import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.List;
+
+@Component
+public class Menu implements Serializable {
     private Integer menuId;
 
     private String menuName;
@@ -13,19 +19,19 @@ public class Menu {
 
     private String menuLevel;
 
-    private Integer parentId;
+    private List<Menu> childs;
 
     public Menu() {
     }
 
-    public Menu(Integer menuId, String menuName, String menuCode, String menuIcon, String menuUrl, String menuLevel, Integer parentId) {
+    public Menu(Integer menuId, String menuName, String menuCode, String menuIcon, String menuUrl, String menuLevel, List<Menu> childs) {
         this.menuId = menuId;
         this.menuName = menuName;
         this.menuCode = menuCode;
         this.menuIcon = menuIcon;
         this.menuUrl = menuUrl;
         this.menuLevel = menuLevel;
-        this.parentId = parentId;
+        this.childs = childs;
     }
 
     public Integer getMenuId() {
@@ -76,12 +82,12 @@ public class Menu {
         this.menuLevel = menuLevel == null ? null : menuLevel.trim();
     }
 
-    public Integer getParentId() {
-        return parentId;
+    public List<Menu> getChilds() {
+        return childs;
     }
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
+    public void setChilds(List<Menu> childs) {
+        this.childs = childs;
     }
 
     @Override
@@ -93,7 +99,7 @@ public class Menu {
                 ", menuIcon='" + menuIcon + '\'' +
                 ", menuUrl='" + menuUrl + '\'' +
                 ", menuLevel='" + menuLevel + '\'' +
-                ", parentId=" + parentId +
+                ", childs=" + childs +
                 '}';
     }
 }

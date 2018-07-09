@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.MenuDao" >
+  <resultMap id="BaseResultMap" type="com.baizhi.cmfz.entity.Menu" >
+    <id column="pid" property="menuId"/>
+    <result column="pname" property="menuName"/>
+    <result column="pcode" property="menuCode"/>
+    <result column="picon" property="menuIcon" />
+    <result column="purl" property="menuUrl" />
+    <result column="plevel" property="menuLevel" />
+    <collection property="childs" ofType="com.baizhi.cmfz.entity.Menu">
+      <id column="cid" property="menuId" />
+      <result column="cname" property="menuName" />
+      <result column="ccode" property="menuCode" />
+      <result column="cicon" property="menuIcon"  />
+      <result column="curl" property="menuUrl" />
+      <result column="clevel" property="menuLevel" />
+    </collection>
+  </resultMap>
+
+  <select id="selectMenu" resultMap="BaseResultMap" >
+    SELECT
+	p.menu_id as pid,
+	p.menu_name as pname,
+	p.menu_code as pcode,
+	p.menu_icon as picon,
+	p.menu_url as purl,
+	p.menu_level as plevel,
+	c.menu_id as cid,
+	c.menu_name as cname,
+	c.menu_code as ccode,
+	c.menu_icon as cicon,
+	c.menu_url as curl,
+	c.menu_level as clevel
+    FROM menu p inner JOIN menu c
+    ON p.menu_id = c.parent_id
+  </select>
+
+</mapper>

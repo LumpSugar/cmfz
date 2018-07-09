@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.SlideShowDao" >
+  <resultMap id="BaseResultMap" type="com.baizhi.cmfz.entity.SlideShow" >
+    <id column="picture_id" property="pictureId" jdbcType="INTEGER" />
+    <result column="picture_path" property="picturePath" jdbcType="VARCHAR" />
+    <result column="picture_date" property="pictureDate" jdbcType="TIMESTAMP" />
+    <result column="picture_description" property="pictureDescription" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    picture_id, picture_path, picture_date, picture_description, state
+  </sql>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from slideshow
+    where picture_id = #{pictureId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.baizhi.cmfz.entity.SlideShow" >
+    insert into slideshow (picture_id, picture_path, picture_date, 
+      picture_description, state)
+    values (#{pictureId,jdbcType=INTEGER}, #{picturePath,jdbcType=VARCHAR}, #{pictureDate,jdbcType=TIMESTAMP}, 
+      #{pictureDescription,jdbcType=VARCHAR}, #{state,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateByPrimaryKey" parameterType="com.baizhi.cmfz.entity.SlideShow" >
+    update slideshow
+    set picture_path = #{picturePath,jdbcType=VARCHAR},
+      picture_date = #{pictureDate,jdbcType=TIMESTAMP},
+      picture_description = #{pictureDescription,jdbcType=VARCHAR},
+      state = #{state,jdbcType=VARCHAR}
+    where picture_id = #{pictureId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from slideshow
+    limit #{start} , #{step}
+  </select>
+
+  <select id="countSlideShow" resultType="java.lang.Integer">
+    select count(*)
+    from slideshow
+  </select>
+
+</mapper>

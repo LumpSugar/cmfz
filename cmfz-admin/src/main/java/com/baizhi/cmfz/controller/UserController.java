@@ -18,6 +18,8 @@ public class UserController {
     @Autowired
     private UserService us;
 
+
+
     @RequestMapping("/register")
     public void register(User user){
         us.addUser(user);

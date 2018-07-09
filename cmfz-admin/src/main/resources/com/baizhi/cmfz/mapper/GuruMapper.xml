@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.cmfz.dao.GuruDao" >
+  <resultMap id="BaseResultMap" type="com.baizhi.cmfz.entity.Guru" >
+    <id column="guru_id" property="guruId" jdbcType="INTEGER" />
+    <result column="religious_name" property="religiousName" jdbcType="VARCHAR" />
+    <result column="guru_photo" property="guruPhoto" jdbcType="VARCHAR" />
+    <result column="guru_intro" property="guruIntro" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    guru_id, religious_name, guru_photo, guru_intro
+  </sql>
+
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from guru
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteById" parameterType="java.lang.Integer" >
+    delete from guru
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="com.baizhi.cmfz.entity.Guru" >
+    insert into guru (guru_id, religious_name, guru_photo, 
+      guru_intro)
+    values (#{guruId,jdbcType=INTEGER}, #{religiousName,jdbcType=VARCHAR}, #{guruPhoto,jdbcType=VARCHAR}, 
+      #{guruIntro,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateById" parameterType="com.baizhi.cmfz.entity.Guru" >
+    update guru
+    set religious_name = #{religiousName,jdbcType=VARCHAR},
+      guru_photo = #{guruPhoto,jdbcType=VARCHAR},
+      guru_intro = #{guruIntro,jdbcType=VARCHAR}
+    where guru_id = #{guruId,jdbcType=INTEGER}
+  </update>
+
+  <select id="selectAllGuru" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from guru
+    limit #{start},#{step}
+  </select>
+
+  <select id="countGuru" resultType="java.lang.Integer">
+    select count(*)
+    from guru
+  </select>
+
+  <select id="selectByKey" parameterType="com.baizhi.cmfz.entity.Guru" resultMap="BaseResultMap">
+    select guru_id , religious_name , guru_photo , guru_intro
+    from guru
+    <where>
+      <trim suffixOverrides="," >
+        <if test="religiousName != null" >
+          religious_name Like concat(concat("%",#{religiousName}),"%"),
+        </if>
+        <if test="guruIntro != null" >
+          guru_intro like concat(concat("%",#{guruIntro}),"%"),
+        </if>
+      </trim>
+    </where>
+  </select>
+
+  <select id="selectAnyGuru" parameterType="com.baizhi.cmfz.entity.Guru" resultMap="BaseResultMap">
+    select * from guru where ${name} like concat(concat('%',#{value}),'%' ) limit #{page},#{rows}
+  </select>
+
+  <select id="selectBatch" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from guru
+  </select>
+
+  <insert id="insertBatch" parameterType="com.baizhi.cmfz.entity.Guru" >
+    insert into guru (religious_name, guru_photo,
+      guru_intro)
+    values
+    <foreach collection="gurus" separator="," item="guru">
+      (#{guru.religiousName,jdbcType=VARCHAR}, #{guru.guruPhoto,jdbcType=VARCHAR},
+      #{guru.guruIntro,jdbcType=VARCHAR})
+    </foreach>
+  </insert>
+
+</mapper>
